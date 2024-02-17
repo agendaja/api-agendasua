@@ -1,0 +1,36 @@
+{
+  "name": "agendasua",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.11.5",
+    "eslint": "^8.56.0",
+    "prisma": "^5.9.1",
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/jwt": "8.0.0",
+    "@prisma/client": "^5.9.1",
+    "bcryptjs": "^2.4.3",
+    "date-fns": "2.29.3",
+    "date-fns-tz": "2.0.0",
+    "dotenv": "16.4.1",
+    "fastify": "^4.25.2",
+    "moment-timezone": "0.5.44",
+    "zod": "^3.22.4"
+  }
+}

@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String  @id @default(uuid())
+  email         String  @unique
+  name          String
+  document      String?
+  phone         String
+  password_hash String
+  admin         Boolean @default(false)
+  is_confirmed  Boolean @default(true)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Squad       Squad[]
+  WorkTimes   WorkTimes[]
+  SquadMember SquadMember[]
+  Meetings    Meetings[]
+  Invite      Invite[]
+
+  @@map("users")
+}
+
+model Invite {
+  id String @id @default(uuid())
+
+  name  String
+  email String
+  token String
+
+  squad    Squad  @relation(fields: [squad_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  squad_id String
+
+  user_id String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     String?
+
+  @@map("invites")
+}
+
+model Squad {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  weekly_hours      Json?   @default("{}")
+  theme_color       String?
+  background_color  String?
+  meetings_duration Float
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id String
+
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  WorkTimes   WorkTimes[]
+  SquadMember SquadMember[]
+  Meetings    Meetings[]
+  Invite      Invite[]
+
+  @@map("squads")
+}
+
+model SquadMember {
+  id String @id @default(uuid())
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id String
+
+  squad    Squad  @relation(fields: [squad_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  squad_id String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("squad_members")
+}
+
+model WorkTimes {
+  id           String @id @default(uuid())
+  weekly_hours Json   @default("{}")
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id String
+
+  squad    Squad  @relation(fields: [squad_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  squad_id String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("work_times")
+}
+
+model Meetings {
+  id String @id @default(uuid())
+
+  name  String
+  email String
+  phone String
+
+  selected_date DateTime
+  selected_time String
+  timezone      String?
+  end_time      String
+
+  owner    User   @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  owner_id String
+
+  squad    Squad  @relation(fields: [squad_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  squad_id String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("meetings")
+}
