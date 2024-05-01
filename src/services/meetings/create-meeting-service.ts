@@ -71,6 +71,8 @@ export class CreateMeetingService {
       end_time: sumHour(selected_time.hour, squad.meetings_duration),
     })
 
+    // TODO: Enviar email para o convidado com data, hora e convite para adicionar na sua agenda Google
+
     return {
       meeting,
     }

@@ -29,6 +29,9 @@ export class PrismaSquadsRepository implements SquadsRepository {
     const squad = await prisma.squad.findUnique({
       where: {
         id: squad_id
+      },
+      include: {
+        user: true
       }
     })
 

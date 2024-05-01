@@ -32,7 +32,7 @@ export async function inviteSellerToSquad(request: FastifyRequest, reply: Fastif
     const token = await reply.jwtSign({
       email,
       squad_id
-    }, {})
+    })
 
     await inviteSellerToSquadService.execute({
       name,

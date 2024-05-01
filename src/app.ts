@@ -21,7 +21,9 @@ app.register(fastifyJwt, {
 app.register(cors, {
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+
 })
 
 app.register(healthRoutes) // This is the health check route

@@ -27,7 +27,7 @@ export async function addSquadMember(request: FastifyRequest, reply: FastifyRepl
   try {
     await addSquadMember.execute({
       email,
-      squad_id,
+      squad_id
     })
 
     await deleteInviteeProfile.execute({

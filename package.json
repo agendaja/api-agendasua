@@ -15,6 +15,7 @@
     "@rocketseat/eslint-config": "^2.1.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.11.5",
+    "@types/nodemailer": "^6.4.14",
     "eslint": "^8.56.0",
     "prisma": "^5.9.1",
     "tsup": "^8.0.1",
@@ -31,6 +32,7 @@
     "dotenv": "16.4.1",
     "fastify": "^4.25.2",
     "moment-timezone": "0.5.44",
+    "nodemailer": "^6.9.13",
     "zod": "^3.22.4"
   }
 }
