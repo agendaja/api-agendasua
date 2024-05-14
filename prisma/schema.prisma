@@ -29,6 +29,7 @@ model User {
   SquadMember SquadMember[]
   Meetings    Meetings[]
   Invite      Invite[]
+  Integration Integration[]
 
   @@map("users")
 }
@@ -129,4 +130,42 @@ model Meetings {
   updated_at DateTime @updatedAt
 
   @@map("meetings")
+}
+
+model Integration {
+  id String @id @default(uuid())
+
+  name String
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
+
+  created_at            DateTime                @default(now())
+  updated_at            DateTime                @updatedAt
+  GoogleIntegrationData GoogleIntegrationData[]
+
+  @@map("integrations")
+}
+
+model GoogleIntegrationData {
+  id String @id @default(cuid())
+
+  access_token String
+
+  refresh_token String
+
+  scope String
+
+  token_type String
+
+  email String?
+
+  expiry_date BigInt
+
+  integration    Integration @relation(fields: [integration_id], references: [id])
+  integration_id String
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @default(now()) @updatedAt
 }

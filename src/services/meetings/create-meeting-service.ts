@@ -5,9 +5,12 @@ import { SquadsRepository } from "@/repositories/squads-repository";
 import { TimeNotAvailabelError } from "../errors/time-not-available";
 import { sumHour } from "@/utils/sumHour";
 import { makeGetDayFreeMeetingsTimesService } from "../factories/make-get-day-free-meetings-times-service";
+import { CreateCalendarEventService } from "../googleCalendar/create-event-service";
+import { setHours, setMinutes } from "date-fns";
 
 interface CreateMeetingServiceRequest {
   name: string;
+  description: string;
   email: string;
   phone: string;
   timezone: string;
@@ -29,6 +32,7 @@ export class CreateMeetingService {
 
   async execute({
     name,
+    description,
     email,
     phone,
     timezone,
@@ -44,6 +48,7 @@ export class CreateMeetingService {
     }
 
     const getDayFreeTimes = makeGetDayFreeMeetingsTimesService()
+    const createCalendarEvent = new CreateCalendarEventService()
 
     const availableTimes = await getDayFreeTimes.execute({ squad_id, date: selected_date })
 
@@ -69,6 +74,29 @@ export class CreateMeetingService {
       squad_id,
       owner_id: work_time.user_id,
       end_time: sumHour(selected_time.hour, squad.meetings_duration),
+    })
+
+    // Covert 00:00 to RFC3339 => 2023-08-13T16:07:54
+    const [hours, minute] = selected_time.hour.split(':').map(Number)
+    const date = new Date(selected_date);
+    const end_time = setHours(setMinutes(date, minute), hours);
+
+    await createCalendarEvent.execute({
+      name,
+      description,
+      start_time: selected_date.toDateString(),
+      end_time: end_time.toISOString(),
+      timezone,
+      invited_email: [
+        {
+          email,
+          organizer: false
+        },
+        {
+          email: work_time.user.email,
+          organizer: true
+        }
+      ]
     })
 
     return {

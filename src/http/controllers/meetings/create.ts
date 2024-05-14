@@ -10,6 +10,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createMeetingBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),
+    description: z.string(),
     phone: z.string().min(10).max(14),
     timezone: z.string(),
     selected_date: z.coerce.date(),
@@ -23,6 +24,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const {
     name,
+    description,
     email,
     phone,
     timezone,
@@ -36,7 +38,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const parsedSelectedDate = moment.tz(selected_date, 'America/Sao_Paulo').utcOffset(0).set({ hours, minute }).toDate()
 
-
   // TODO: if the event has a availability of time, validate if the choosen date and time follows the availability
 
   const createMeetingService = makeCreateMeetingsService()
@@ -44,6 +45,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   try {
     const meeting = await createMeetingService.execute({
       name,
+      description,
       email,
       phone,
       timezone,
@@ -62,7 +64,8 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     if (error instanceof TimeNotAvailabelError) {
       return reply.status(400).send({ message: error.message })
     }
+
+    throw error
   }
 
-  return new Error('Not implemented')
 }

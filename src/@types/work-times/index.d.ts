@@ -1,3 +1,5 @@
+import { User } from "@prisma/client";
+
 declare namespace WorkTimes {
 
   export type weekly_hours = {
@@ -16,5 +18,9 @@ declare namespace WorkTimes {
     weekly_hours: weekly_hours;
     created_at: Date;
     updated_at: Date;
+  }
+
+  export type IncludeUser = WorkTime & {
+    user: User
   }
 }
