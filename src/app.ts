@@ -8,6 +8,7 @@ import { meetingsFreeRoutes, meetingsRoutes } from './http/controllers/meetings/
 import cors from '@fastify/cors'
 import { authRoutes } from './http/controllers/auth/routes';
 import { healthRoutes } from './http/controllers/routes';
+import { googleRoutes } from './http/controllers/google/routes';
 
 export const app = fastify()
 
@@ -34,6 +35,7 @@ app.register(squadFreeRoutes)
 app.register(meetingsRoutes)
 app.register(meetingsFreeRoutes)
 app.register(authRoutes)
+app.register(googleRoutes)
 
 app.setErrorHandler((error, request, reply) => {
   if (error instanceof ZodError) {
