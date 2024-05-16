@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "tsx watch src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build"
   },
@@ -26,6 +26,7 @@
   "dependencies": {
     "@fastify/cors": "^9.0.0",
     "@fastify/jwt": "8.0.0",
+    "@googleapis/docs": "^3.0.2",
     "@prisma/client": "^5.9.1",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",

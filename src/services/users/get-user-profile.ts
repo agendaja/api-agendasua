@@ -1,5 +1,4 @@
 import { UsersRepository } from "@/repositories/users-repository";
-import { User } from "@prisma/client";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 
 interface GetUserProfileServiceRequest {
@@ -7,7 +6,7 @@ interface GetUserProfileServiceRequest {
 }
 
 interface GetUserProfileServiceResponse {
-  user: User;
+  user: UserTypes.UserIntegration;
 }
 
 export class GetUserProfileService {
@@ -22,7 +21,7 @@ export class GetUserProfileService {
     }
 
     return {
-      user,
+      user
     }
 
   }

@@ -29,7 +29,7 @@ model User {
   SquadMember SquadMember[]
   Meetings    Meetings[]
   Invite      Invite[]
-  Integration Integration[]
+  integration Integration[]
 
   @@map("users")
 }
@@ -137,8 +137,8 @@ model Integration {
 
   name String
 
-  user_id String
-  user    User   @relation(fields: [user_id], references: [id])
+  user_email String
+  user       User   @relation(fields: [user_email], references: [email])
 
   created_at            DateTime                @default(now())
   updated_at            DateTime                @updatedAt
@@ -162,7 +162,7 @@ model GoogleIntegrationData {
 
   expiry_date BigInt
 
-  integration    Integration @relation(fields: [integration_id], references: [id])
+  integration    Integration @relation(fields: [integration_id], references: [id], onDelete: Cascade)
   integration_id String
 
   createdAt DateTime @default(now())

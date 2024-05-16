@@ -1,3 +1,5 @@
+import { env } from "@/env";
+import { makeCreateIntegrationService } from "@/services/factories/make-create-integration-service";
 import { oauth2Client } from "@/utils/google/oAuthClietnt";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -6,7 +8,7 @@ import { z } from "zod";
 export async function googleRedirect(req: FastifyRequest, reply: FastifyReply) {
 
   const createQuerySchema = z.object({
-    code: z.string(),
+    code: z.string()
   })
 
   const { code } = createQuerySchema.parse(req.query)
@@ -15,13 +17,26 @@ export async function googleRedirect(req: FastifyRequest, reply: FastifyReply) {
 
   oauth2Client.setCredentials(tokens);
 
-  /* Salvar na tabela integrações com os seguintes campos: 
-  access_token, 
-  refresh_token, 
-  scope, 
-  token_type,
-  expiry_date
-*/
+  // Pega o email do usuário autenticado
+  const ticket = await oauth2Client.verifyIdToken({
+    idToken: tokens.id_token || '',
+    audience: env.CLIENT_ID
+  })
 
-  return reply.send(200)
+  const payload = ticket.getPayload()
+
+  const createIntegrationService = makeCreateIntegrationService()
+
+  await createIntegrationService.execute({
+    access_token: tokens.access_token || '',
+    refresh_token: tokens.refresh_token || '',
+    scope: tokens.scope || '',
+    token_type: tokens.token_type || '',
+    expiry_date: tokens.expiry_date || Number(),
+    email: payload?.email || '',
+    name: 'google'
+  })
+
+  return reply.redirect('http://localhost:3000/integrations')
+
 }

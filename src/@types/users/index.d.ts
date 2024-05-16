@@ -1,4 +1,4 @@
-declare namespace Users {
+declare namespace UserTypes {
 
   export type PreRegister = {
     name: string;
@@ -7,4 +7,7 @@ declare namespace Users {
     token: string;
     user_id?: string;
   }
+
+  export type UserIntegration = User & { integration: Integration }
+
 }
