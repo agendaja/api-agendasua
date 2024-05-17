@@ -7,17 +7,12 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   MAILER_EMAIL: z.string(),
   MAILER_KEY: z.string(),
-<<<<<<< HEAD
   CLIENT_ID: z.string(),
   CLIENT_SECRET: z.string(),
   REDIRECT_URL: z.string(),
   API_KEY: z.string(),
   WEBSITE_URL: z.string(),
   PORT: z.coerce.number().default(3333)
-=======
-  WEBSITE_URL: z.string(),
-  PORT: z.coerce.number().default(3333),
->>>>>>> e9ce8e69f247c818063a99d5d33dca6a06f0d9e9
 })
 
 
