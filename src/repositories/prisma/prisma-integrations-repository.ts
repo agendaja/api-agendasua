@@ -11,10 +11,10 @@ export class PrismaIntegrationRepository implements IntegrationsRepository {
     return integration;
   }
 
-  async findByUserEmail(email: string, name: string): Promise<Integration | null> {
+  async findByUserId(user_id: string, name: string): Promise<Integration | null> {
     const integration = await prisma.integration.findFirst({
       where: {
-        user_email: email,
+        user_id,
         name,
       }
     });

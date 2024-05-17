@@ -11,6 +11,5 @@ export async function getInviteProfile(request: FastifyRequest, reply: FastifyRe
     squad_id: request.user.squad_id,
   })
 
-
   return reply.status(200).send(user)
 }

@@ -8,7 +8,7 @@ interface CreateIntegrationServiceRequest {
   token_type: string;
   expiry_date: number;
   name: 'google' | 'zoom';
-  email: string;
+  user_id: string;
 }
 
 export class CreateIntegrationService {
@@ -17,9 +17,9 @@ export class CreateIntegrationService {
     private googleIntegrationDataRepository: GoogleIntegrationDataRepository
   ) { }
 
-  async execute({ access_token, refresh_token, scope, token_type, expiry_date, name, email }: CreateIntegrationServiceRequest) {
+  async execute({ access_token, refresh_token, scope, token_type, expiry_date, name, user_id }: CreateIntegrationServiceRequest) {
 
-    const existingIntegration = await this.integrationsRepository.findByUserEmail(email, name)
+    const existingIntegration = await this.integrationsRepository.findByUserId(user_id, name)
 
     if (existingIntegration) {
       await this.integrationsRepository.delete(existingIntegration.id)
@@ -27,7 +27,7 @@ export class CreateIntegrationService {
 
     const newIntegration = await this.integrationsRepository.create({
       name,
-      user_email: email
+      user_id
     })
 
     if (name === 'google') {
@@ -38,7 +38,6 @@ export class CreateIntegrationService {
         token_type,
         expiry_date,
         integration_id: newIntegration.id,
-        email
       })
     }
   }

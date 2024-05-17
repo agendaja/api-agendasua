@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-type TemplateOptions = 'new-squad-member' | 'new-meeting' | 'recover-password' | 'event-invite'
+type TemplateOptions = 'new-squad-member' | 'new-meeting' | 'recover-password'
 type Sender = {
   email: string;
   name: string

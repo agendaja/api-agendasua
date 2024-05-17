@@ -24,7 +24,6 @@ app.register(cors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: "access-control-allow-origin,access-control-allow-methods,access-control-allow-headers",
 })
 
 

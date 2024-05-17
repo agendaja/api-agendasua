@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import { makeCreateIntegrationService } from "@/services/factories/make-create-integration-service";
 import { oauth2Client } from "@/utils/google/oAuthClietnt";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -8,22 +7,16 @@ import { z } from "zod";
 export async function googleRedirect(req: FastifyRequest, reply: FastifyReply) {
 
   const createQuerySchema = z.object({
-    code: z.string()
+    code: z.string(),
+    state: z.string(),
   })
 
-  const { code } = createQuerySchema.parse(req.query)
+  const { code, state } = createQuerySchema.parse(req.query)
 
+  const { user_id } = JSON.parse(state)
   const { tokens } = await oauth2Client.getToken(code)
 
   oauth2Client.setCredentials(tokens);
-
-  // Pega o email do usuário autenticado
-  const ticket = await oauth2Client.verifyIdToken({
-    idToken: tokens.id_token || '',
-    audience: env.CLIENT_ID
-  })
-
-  const payload = ticket.getPayload()
 
   const createIntegrationService = makeCreateIntegrationService()
 
@@ -33,7 +26,7 @@ export async function googleRedirect(req: FastifyRequest, reply: FastifyReply) {
     scope: tokens.scope || '',
     token_type: tokens.token_type || '',
     expiry_date: tokens.expiry_date || Number(),
-    email: payload?.email || '',
+    user_id,
     name: 'google'
   })
 

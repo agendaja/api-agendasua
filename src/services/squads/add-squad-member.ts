@@ -4,10 +4,13 @@ import { UserAlreadyExistsError } from "../errors/user-already-exists-error";
 import { SquadsMemberRepository } from "@/repositories/squads-member-repository";
 import { WorkTimeRepository } from "@/repositories/work-time-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
+import { SendMail } from "../mail";
+import { env } from "@/env";
 
 interface AddSquadMemberServiceRequest {
   email: string;
   squad_id: string;
+  token: string;
 }
 
 export class AddSquadMemberService {
@@ -21,6 +24,7 @@ export class AddSquadMemberService {
   async execute({
     email,
     squad_id,
+    token,
   }: AddSquadMemberServiceRequest) {
     const squadToAddSeller = await this.squadsRepository.findSquadById(squad_id);
 
@@ -44,5 +48,21 @@ export class AddSquadMemberService {
 
     await this.workTimeRepository.addSquadWorkTimeToSeller(squad_id, existingUser.id, squadToAddSeller.weekly_hours);
 
+    await SendMail(
+      {
+        name: existingUser.name,
+        email: existingUser.email
+      },
+      {
+        name: squadToAddSeller.user.name,
+        email: squadToAddSeller.user.email
+      },
+      `[CONVITE ${squadToAddSeller.name}]`,
+      'new-squad-member',
+      {
+        squadName: squadToAddSeller.name,
+        url: `${env.WEBSITE_URL}/invite?token=${token}`
+      }
+    )
   }
 }

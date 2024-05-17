@@ -25,9 +25,16 @@ export async function addSquadMember(request: FastifyRequest, reply: FastifyRepl
   const deleteInviteeProfile = makeDeleteInviteePorfileService()
 
   try {
+
+    const token = await reply.jwtSign({
+      email,
+      squad_id
+    })
+
     await addSquadMember.execute({
       email,
       squad_id,
+      token
     })
 
     await deleteInviteeProfile.execute({
