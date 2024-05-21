@@ -3,7 +3,6 @@ import { SquadMember } from "@prisma/client";
 import { SquadsMemberRepository } from "../squads-member-repository";
 
 export class PrismaSquadsMemberRepository implements SquadsMemberRepository {
-
   async create(squad_id: string, user_id: string) {
     const squadMember = await prisma.squadMember.create({
       data: {

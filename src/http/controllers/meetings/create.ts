@@ -86,8 +86,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     if (error instanceof TimeNotAvailabelError) {
       return reply.status(400).send({ message: error.message })
     }
-
     throw error
   }
-
 }

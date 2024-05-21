@@ -5,7 +5,6 @@ import { SquadsMemberRepository } from "@/repositories/squads-member-repository"
 import { WorkTimeRepository } from "@/repositories/work-time-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 
-
 interface AddSquadMemberServiceRequest {
   email: string;
   squad_id: string;
