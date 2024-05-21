@@ -1,6 +1,6 @@
 import { ResourceNotFoundError } from "@/services/errors/resource-not-found-error";
 import { UserAlreadyExistsError } from "@/services/errors/user-already-exists-error";
-import { makeInviteSellerToSquadService } from "@/services/factories/make-invite-seller-to-squad-service";
+import { makeInviteSellerToSquadService } from "@/services/factories/squads/make-invite-seller-to-squad-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

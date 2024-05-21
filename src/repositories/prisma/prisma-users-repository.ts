@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { UsersRepository } from "../users-repository";
+import { UserTypes } from "@/@types/users";
 
 export class PrismaUsersRepository implements UsersRepository {
 
@@ -12,10 +13,12 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
-  async createPreRegister(data: Users.PreRegister) {
-    await prisma.invite.create({
+  async createPreRegister(data: UserTypes.PreRegister) {
+    const user = await prisma.invite.create({
       data,
     })
+
+    return user
   }
 
   async findById(id: string) {

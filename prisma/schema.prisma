@@ -111,7 +111,9 @@ model WorkTimes {
 model Meetings {
   id String @id @default(uuid())
 
-  name  String
+  name        String
+  description String?
+
   email String
   phone String
 
@@ -138,11 +140,11 @@ model Integration {
   name String
 
   user_id String
-  user    User   @relation(fields: [user_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  created_at            DateTime                @default(now())
-  updated_at            DateTime                @updatedAt
-  GoogleIntegrationData GoogleIntegrationData[]
+  created_at        DateTime               @default(now())
+  updated_at        DateTime               @updatedAt
+  googleIntegration GoogleIntegrationData?
 
   @@map("integrations")
 }
@@ -162,8 +164,8 @@ model GoogleIntegrationData {
 
   expiry_date BigInt
 
-  integration    Integration @relation(fields: [integration_id], references: [id], onDelete: Cascade)
-  integration_id String
+  integration    Integration @relation(fields: [integration_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  integration_id String      @unique
 
   createdAt DateTime @default(now())
 

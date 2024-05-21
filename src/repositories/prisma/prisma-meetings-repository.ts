@@ -7,6 +7,9 @@ export class PrismaMeetingsRepository implements MeetingsRepository {
   async create(data: Prisma.MeetingsUncheckedCreateInput) {
     const meeting = await prisma.meetings.create({
       data,
+      include: {
+        owner: true
+      }
     });
 
     return meeting;

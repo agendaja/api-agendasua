@@ -4,6 +4,7 @@ import { env } from '@/env';
 import { NewSquadMemberTemplate } from './templates/new-squad-member';
 import { NewMeetingTemplate } from './templates/new-meeting';
 import { RecoverPasswordTemplate } from './templates/revocer-password';
+import { NewUserSquadAndMemberTemplate } from './templates/new-user-and-squad-member';
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-type TemplateOptions = 'new-squad-member' | 'new-meeting' | 'recover-password'
+type TemplateOptions = 'new-squad-member' | 'new-meeting' | 'recover-password' | 'new-user-and-squad-member'
 type Sender = {
   email: string;
   name: string
@@ -32,6 +33,11 @@ export async function SendMail<T>(
   if (template === 'new-squad-member') {
     const data = templateData as MailTypes.NewSquadMember.Data
     templateHtml = NewSquadMemberTemplate(data.squadName, data.url)
+  }
+
+  if (template === 'new-user-and-squad-member') {
+    const data = templateData as MailTypes.NewSquadMember.Data
+    templateHtml = NewUserSquadAndMemberTemplate(data.squadName, data.url)
   }
 
   if (template === 'new-meeting') {
@@ -52,10 +58,8 @@ export async function SendMail<T>(
       html: templateHtml
     })
 
-    return true
   } catch (error) {
     console.log(error)
-    return false
   }
 
 }

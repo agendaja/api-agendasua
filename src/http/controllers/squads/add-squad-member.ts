@@ -28,7 +28,7 @@ export async function addSquadMember(request: FastifyRequest, reply: FastifyRepl
 
     const token = await reply.jwtSign({
       email,
-      squad_id
+      squad_id,
     })
 
     await addSquadMember.execute({

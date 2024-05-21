@@ -1,4 +1,4 @@
-import { makeSquadService } from "@/services/factories/make-squad-service";
+import { makeSquadService } from "@/services/factories/squads/make-squad-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

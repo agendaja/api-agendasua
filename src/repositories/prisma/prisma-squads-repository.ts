@@ -38,4 +38,14 @@ export class PrismaSquadsRepository implements SquadsRepository {
     return squad
   }
 
+  async findSquadsByIds(data: { squad_id: string }[]) {
+    const squads = await prisma.squad.findMany({
+      where: {
+        id: { in: data.map((i) => i.squad_id) }
+      }
+    })
+
+    return squads
+  }
+
 }

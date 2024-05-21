@@ -60,12 +60,17 @@ export class CreateMeetingService {
 
     const work_time = await this.workTimeRepository.getSellerWorkTime(availableTime.id);
 
+    if (!work_time) {
+      throw new ResourceNotFoundError()
+    }
+
     if (Number.isNaN(selected_date)) {
       throw new Error('Invalid date');
     }
 
     const meeting = await this.meetingsRepository.create({
       name,
+      description,
       email,
       phone,
       timezone,
@@ -74,29 +79,6 @@ export class CreateMeetingService {
       squad_id,
       owner_id: work_time.user_id,
       end_time: sumHour(selected_time.hour, squad.meetings_duration),
-    })
-
-    // Covert 00:00 to RFC3339 => 2023-08-13T16:07:54
-    const [hours, minute] = selected_time.hour.split(':').map(Number)
-    const date = new Date(selected_date);
-    const end_time = setHours(setMinutes(date, minute), hours);
-
-    await createCalendarEvent.execute({
-      name,
-      description,
-      start_time: selected_date.toDateString(),
-      end_time: end_time.toISOString(),
-      timezone,
-      invited_email: [
-        {
-          email,
-          organizer: false
-        },
-        {
-          email: work_time.user.email,
-          organizer: true
-        }
-      ]
     })
 
     return {

@@ -1,5 +1,7 @@
-declare namespace UserTypes {
 
+import { Integration, User } from "@prisma/client";
+
+declare namespace UserTypes {
   export type PreRegister = {
     name: string;
     email: string;
@@ -7,7 +9,6 @@ declare namespace UserTypes {
     token: string;
     user_id?: string;
   }
-
   export type UserIntegration = User & { integration: Integration }
 
 }

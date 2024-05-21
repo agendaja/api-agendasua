@@ -27,4 +27,17 @@ export class PrismaSquadsMemberRepository implements SquadsMemberRepository {
 
     return squadMember
   }
+
+  async findSellerSquads(seller_id: string): Promise<{ squad_id: string; }[] | []> {
+    const ids = await prisma.squadMember.findMany({
+      where: {
+        user_id: seller_id
+      },
+      select: {
+        squad_id: true
+      }
+    })
+
+    return ids
+  }
 }

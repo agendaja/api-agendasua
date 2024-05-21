@@ -16,6 +16,7 @@ export async function getAuthUser(request: FastifyRequest, reply: FastifyReply) 
   return reply.status(200).send({
     name: user.name,
     email: user.email,
-    integration: user.integration
+    integration: user.integration,
+    admin: user.admin
   })
 }

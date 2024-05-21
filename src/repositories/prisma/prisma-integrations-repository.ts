@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Integration, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { IntegrationsRepository } from "../integrations-repository";
 
 export class PrismaIntegrationRepository implements IntegrationsRepository {
@@ -11,11 +11,14 @@ export class PrismaIntegrationRepository implements IntegrationsRepository {
     return integration;
   }
 
-  async findByUserId(user_id: string, name: string): Promise<Integration | null> {
+  async findByUserId(user_id: string, name: string, includeGData: boolean) {
     const integration = await prisma.integration.findFirst({
       where: {
         user_id,
         name,
+      },
+      include: {
+        googleIntegration: includeGData
       }
     });
 

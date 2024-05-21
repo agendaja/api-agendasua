@@ -10,4 +10,13 @@ export class PrismaGoogleIntegrationDataRepository implements GoogleIntegrationD
 
     return integration;
   }
+
+  async update(data: Prisma.GoogleIntegrationDataUpdateInput, integration_id: string) {
+    await prisma.googleIntegrationData.update({
+      where: {
+        integration_id
+      },
+      data
+    })
+  }
 }
