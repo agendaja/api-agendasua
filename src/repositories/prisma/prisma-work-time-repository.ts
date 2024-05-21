@@ -14,7 +14,7 @@ export class PrismaWorkTimeRepository implements WorkTimeRepository {
     return work_time as WorkTimes.WorkTime[]
   }
 
-  async getSellerWorkTime(id: string): Promise<WorkTimes.IncludeUser> {
+  async getSellerWorkTime(id: string) {
     const work_time = await prisma.workTimes.findUnique({
       where: {
         id,

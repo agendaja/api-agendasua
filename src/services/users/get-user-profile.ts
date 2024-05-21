@@ -1,13 +1,13 @@
 import { UsersRepository } from "@/repositories/users-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
-import { UserTypes } from "@/@types/users";
+import { Prisma } from "@prisma/client";
 
 interface GetUserProfileServiceRequest {
   user_id: string;
 }
 
 interface GetUserProfileServiceResponse {
-  user: UserTypes.UserIntegration;
+  user: Prisma.UserGetPayload<{ include: { integration: true } }> | null
 }
 
 export class GetUserProfileService {

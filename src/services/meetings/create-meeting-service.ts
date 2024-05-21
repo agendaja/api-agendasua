@@ -57,6 +57,10 @@ export class CreateMeetingService {
 
     const work_time = await this.workTimeRepository.getSellerWorkTime(availableTime.id);
 
+    if (!work_time) {
+      throw new ResourceNotFoundError()
+    }
+
     if (Number.isNaN(selected_date)) {
       throw new Error('Invalid date');
     }
