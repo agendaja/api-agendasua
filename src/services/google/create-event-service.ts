@@ -40,8 +40,6 @@ export class CreateCalendarEventService {
       auth: oauth2Client,
     })
 
-    console.log('START_TIME', start_time)
-
     // Covert end_time from 09:00 to RFC3339 => 2023-08-13T09:00:00
     const [hours, minute] = end_time.split(':').map(Number)
     const date = new Date(start_time);
