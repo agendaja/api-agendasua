@@ -1,5 +1,5 @@
 import { UserAlreadyExistsError } from "@/services/errors/user-already-exists-error";
-import { makeRegisterService } from "@/services/factories/make-register-service";
+import { makeRegisterService } from "@/services/factories/users/make-register-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

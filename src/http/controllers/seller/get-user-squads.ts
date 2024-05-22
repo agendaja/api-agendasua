@@ -1,4 +1,4 @@
-import { makeGetSellerSquadsService } from "@/services/factories/squads/seller/make-get-seller-squads-service";
+import { makeGetSellerSquadsService } from "@/services/factories/seller/make-get-seller-squads-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function getSellerSquads(request: FastifyRequest, reply: FastifyReply) {

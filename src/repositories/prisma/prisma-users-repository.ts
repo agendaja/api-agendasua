@@ -13,10 +13,35 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
+  async update(data: Prisma.UserUpdateInput, user_id: string) {
+    const user = await prisma.user.update({
+      where: {
+        id: user_id
+      },
+      data,
+      include: {
+        integration: true
+      }
+    })
+
+    return user
+  }
+
   async createPreRegister(data: UserTypes.PreRegister) {
     const user = await prisma.invite.create({
       data,
     })
+
+    return user
+  }
+
+  async findOne(filter: Prisma.UserWhereInput) {
+    const user = await prisma.user.findFirst({
+      where: filter,
+      include: {
+        integration: true,
+      },
+    });
 
     return user
   }

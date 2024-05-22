@@ -9,7 +9,7 @@ import cors from '@fastify/cors'
 import { authRoutes } from './http/controllers/auth/routes';
 import { healthRoutes } from './http/controllers/routes';
 import { googleRoutes } from './http/controllers/integrations/google/routes';
-import { sellerRoutes } from './http/controllers/squads/sellers/routes';
+import { sellerRoutes } from './http/controllers/seller/routes';
 
 export const app = fastify()
 

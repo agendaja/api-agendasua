@@ -1,5 +1,5 @@
 
-import { makeGetInviteePorfileService } from "@/services/factories/make-get-invitee-profile-service copy";
+import { makeGetInviteePorfileService } from "@/services/factories/make-get-invitee-profile-service"
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function getInviteProfile(request: FastifyRequest, reply: FastifyReply) {
