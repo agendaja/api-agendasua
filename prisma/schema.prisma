@@ -24,12 +24,12 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  Squad       Squad[]
-  WorkTimes   WorkTimes[]
-  SquadMember SquadMember[]
-  Meetings    Meetings[]
-  Invite      Invite[]
-  integration Integration[]
+  squad        Squad[]
+  work_times   WorkTimes[]
+  squad_member SquadMember[]
+  meetings     Meetings[]
+  invite       Invite[]
+  integration  Integration[]
 
   @@map("users")
 }
@@ -67,12 +67,12 @@ model Squad {
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id String
 
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-  WorkTimes   WorkTimes[]
-  SquadMember SquadMember[]
-  Meetings    Meetings[]
-  Invite      Invite[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  work_times   WorkTimes[]
+  squad_member SquadMember[]
+  meetings     Meetings[]
+  invite       Invite[]
 
   @@map("squads")
 }

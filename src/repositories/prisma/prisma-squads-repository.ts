@@ -18,7 +18,7 @@ export class PrismaSquadsRepository implements SquadsRepository {
         user_id
       },
       include: {
-        SquadMember: true
+        squad_member: true
       }
     })
 
