@@ -10,6 +10,7 @@ import { authRoutes } from './http/controllers/auth/routes';
 import { healthRoutes } from './http/controllers/routes';
 import { googleRoutes } from './http/controllers/integrations/google/routes';
 import { sellerRoutes } from './http/controllers/seller/routes';
+import { integrationRoutes } from './http/controllers/integrations/routes';
 
 export const app = fastify()
 
@@ -21,7 +22,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(cors, {
-  origin: '*',
+  origin: ['https://agendasua.com.br', 'https://www.agendasua.com.br', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -37,6 +38,7 @@ app.register(meetingsFreeRoutes)
 app.register(authRoutes)
 app.register(googleRoutes)
 app.register(sellerRoutes)
+app.register(integrationRoutes)
 
 
 app.setErrorHandler((error, request, reply) => {
