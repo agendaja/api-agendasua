@@ -22,7 +22,7 @@ export class CreateIntegrationService {
     const existingIntegration = await this.integrationsRepository.findByUserId(user_id, name)
 
     if (existingIntegration) {
-      await this.integrationsRepository.delete(existingIntegration.id)
+      await this.integrationsRepository.delete(existingIntegration.id, user_id)
     }
 
     const newIntegration = await this.integrationsRepository.create({

@@ -1,21 +1,19 @@
 import { IntegrationsRepository } from "@/repositories/integrations-repository";
-import { GoogleIntegrationDataRepository } from "@/repositories/google-integration-data-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 
 interface GetIntegrationServiceRequest {
   name: 'google' | 'zoom';
-  email: string;
+  user_id: string;
 }
 
 export class GetIntegrationService {
   constructor(
     private integrationsRepository: IntegrationsRepository,
-    private googleIntegrationData: GoogleIntegrationDataRepository
   ) { }
 
-  async execute({ name, email }: GetIntegrationServiceRequest) {
+  async execute({ name, user_id }: GetIntegrationServiceRequest) {
 
-    const existingIntegration = await this.integrationsRepository.findByUserEmail(email, name)
+    const existingIntegration = await this.integrationsRepository.findByUserId(user_id, name)
 
     if (!existingIntegration) {
       throw new ResourceNotFoundError()

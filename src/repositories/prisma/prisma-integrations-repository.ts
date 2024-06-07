@@ -25,10 +25,11 @@ export class PrismaIntegrationRepository implements IntegrationsRepository {
     return integration;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, user_id: string): Promise<void> {
     await prisma.integration.delete({
       where: {
-        id
+        id,
+        user_id
       }
     });
 
