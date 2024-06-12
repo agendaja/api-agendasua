@@ -1,4 +1,4 @@
-import { makeGetDayFreeMeetingsTimesService } from "@/services/factories/make-get-day-free-meetings-times-service";
+import { makeGetDayFreeMeetingsTimesService } from "@/services/factories/meetings/make-get-day-free-meetings-times-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

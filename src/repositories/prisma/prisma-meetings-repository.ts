@@ -15,6 +15,20 @@ export class PrismaMeetingsRepository implements MeetingsRepository {
     return meeting;
   }
 
+  async findByOwnerId(owner_id: string, startDate: Date, endDate: Date) {
+    const meetings = await prisma.meetings.findMany({
+      where: {
+        owner_id,
+        selected_date: {
+          gte: startDate,
+          lte: endDate
+        }
+      },
+    });
+
+    return meetings;
+  }
+
   async getMeetingsFromDate(squad_id: string, date: Date) {
 
     const meetings = await prisma.meetings.findMany({

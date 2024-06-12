@@ -1,7 +1,7 @@
 import { ResourceNotFoundError } from "@/services/errors/resource-not-found-error";
 import { TimeNotAvailabelError } from "@/services/errors/time-not-available";
 import { makeCreateCalendarEventService } from "@/services/factories/google/make-create-calendar-envent-service";
-import { makeCreateMeetingsService } from "@/services/factories/make-meeting-service";
+import { makeCreateMeetingsService } from "@/services/factories/meetings/make-meeting-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import moment from "moment-timezone";
 import { z } from "zod";
