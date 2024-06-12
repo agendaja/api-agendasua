@@ -25,10 +25,10 @@ export class PrismaWorkTimeRepository implements WorkTimeRepository {
     return work_time as WorkTimes.WorkTime[]
   }
 
-  async getSellerWorkTime(user_id: string, squad_id: string) {
+  async getSellerWorkTime(id: string, squad_id: string) {
     const work_time = await prisma.workTimes.findFirst({
       where: {
-        user_id,
+        id,
         squad_id
       },
       include: {

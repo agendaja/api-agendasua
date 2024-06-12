@@ -48,4 +48,45 @@ export class PrismaSquadsRepository implements SquadsRepository {
     return squads
   }
 
+  async findSquadsByUserIdWithMeetings(user_id: string, start: Date, end: Date) {
+    const squads = await prisma.squad.findMany({
+      where: {
+        user_id
+      },
+      include: {
+        meetings: {
+          where: {
+            selected_date: {
+              gte: start,
+              lte: end,
+            }
+          }
+        },
+        work_times: true
+      }
+    })
+
+    return squads
+  }
+  async findBySquadIdWithMeetings(id: string, start: Date, end: Date) {
+    const squad = await prisma.squad.findUnique({
+      where: {
+        id
+      },
+      include: {
+        meetings: {
+          where: {
+            selected_date: {
+              gte: start,
+              lte: end,
+            }
+          }
+        },
+        work_times: true
+      }
+    })
+
+    return squad
+  }
+
 }
