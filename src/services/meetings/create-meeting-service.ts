@@ -4,7 +4,8 @@ import { MeetingsRepository } from "@/repositories/meetings-repository";
 import { SquadsRepository } from "@/repositories/squads-repository";
 import { TimeNotAvailabelError } from "../errors/time-not-available";
 import { sumHour } from "@/utils/sumHour";
-import { makeGetDayFreeMeetingsTimesService } from "../factories/make-get-day-free-meetings-times-service";
+import { Console } from "console";
+import { makeGetDayFreeMeetingsTimesService } from "../factories/meetings/make-get-day-free-meetings-times-service";
 
 interface CreateMeetingServiceRequest {
   name: string;
