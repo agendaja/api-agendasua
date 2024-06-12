@@ -9,18 +9,16 @@ import { addSquadMember } from "./add-squad-member";
 
 export async function squadsRoutes(app: FastifyInstance) {
 
-  app.addHook('onRequest', verifyJWT)
-
-  app.post('/squad', create)
-  app.post('/squad/:squad_id/seller', inviteSellerToSquad)
-
-  app.get('/squads', getUserSquads)
-}
-
-export async function squadFreeRoutes(app: FastifyInstance) {
   app.get('/squad/:squad_id', getSquad)
 
   app.post('/squad/new-user', addNewUserToSquad)
+
   app.post('/squad/new-member', addSquadMember)
 
+
+  app.post('/squad', { onRequest: [verifyJWT] }, create)
+
+  app.post('/squad/:squad_id/seller', { onRequest: [verifyJWT] }, inviteSellerToSquad)
+
+  app.get('/squads', { onRequest: [verifyJWT] }, getUserSquads)
 }
