@@ -1,6 +1,7 @@
 import { SquadsRepository } from "@/repositories/squads-repository";
 import { endOfWeek, startOfWeek } from "date-fns";
 import { WorkTimes } from "@/@types/work-times";
+import { getTimeIntervals } from "@/utils/getTimeIntervals";
 
 interface GetSquadAnalyticsServiceRequest {
   squad_id: string;
@@ -10,6 +11,12 @@ interface GetSquadAnalyticsServiceResponse {
   totalMeetings?: number;
   availableHours?: number;
   allIntervals?: string[];
+  squad: {
+    id: string;
+    name: string;
+    theme_color: string | null;
+    members: number;
+  };
   data?: {
     day: string;
     hours: {
@@ -25,33 +32,7 @@ export class GetSquadAnalyticsService {
     private squadsRepository: SquadsRepository,
   ) { }
 
-  async execute({ squad_id }: GetSquadAnalyticsServiceRequest): Promise<GetSquadAnalyticsServiceResponse> {
-
-    const getTimeIntervals = (start: string, end: string, interval: number) => {
-      const startHour = parseInt(start.split(':')[0]);
-      const startMinute = parseInt(start.split(':')[1]);
-      const endHour = parseInt(end.split(':')[0]);
-      const endMinute = parseInt(end.split(':')[1]);
-
-      const intervals = [];
-      let currentHour = startHour;
-      let currentMinute = startMinute;
-
-      while (currentHour < endHour || (currentHour === endHour && currentMinute < endMinute)) {
-        const nextMinute = (currentMinute + interval) % 60;
-        const nextHour = currentHour + Math.floor((currentMinute + interval) / 60);
-
-        intervals.push({
-          start: `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`,
-          end: `${String(nextHour).padStart(2, '0')}:${String(nextMinute).padStart(2, '0')}`
-        });
-
-        currentHour = nextHour;
-        currentMinute = nextMinute;
-      }
-
-      return intervals;
-    };
+  async execute({ squad_id }: GetSquadAnalyticsServiceRequest): Promise<GetSquadAnalyticsServiceResponse | {}> {
 
     const today = new Date()
 
@@ -82,7 +63,6 @@ export class GetSquadAnalyticsService {
       (workTime.weekly_hours as any)
         .filter((day: WorkTimes.weekly_hours) => day.available)
         .forEach((day: WorkTimes.weekly_hours) => {
-          totalAvailableSlots += 1
           day.hours.forEach(hour => {
             const intervals = getTimeIntervals(hour.start_hour, hour.end_hour, squad.meetings_duration * 60);
 
@@ -93,9 +73,26 @@ export class GetSquadAnalyticsService {
                 data[day.name][timeKey] = { availableSlots: 0, occupiedSlots: 0 };
               }
               data[day.name][timeKey].availableSlots += 1;
+              totalAvailableSlots += 1
             });
           });
         });
+    });
+
+    // Ordenar todos os intervalos e garantir unicidade
+    const sortedIntervals = Array.from(allIntervals).sort((a, b) => {
+      const [aStart] = a.split('-').map(t => t);
+      const [bStart] = b.split('-').map(t => t);
+      return aStart.localeCompare(bStart);
+    });
+
+    // Adicionar todos os intervalos possíveis aos dados, mesmo que não estejam disponíveis
+    weekDays.forEach(day => {
+      sortedIntervals.forEach(timeKey => {
+        if (!data[day][timeKey]) {
+          data[day][timeKey] = { availableSlots: 0, occupiedSlots: 0 };
+        }
+      });
     });
 
     // Processa os reuniões para preencher os horários ocupados
@@ -113,7 +110,8 @@ export class GetSquadAnalyticsService {
     const formattedData = weekDays.map(day => {
       return {
         day,
-        hours: Object.entries(data[day]).map(([timeKey, { availableSlots, occupiedSlots }]) => {
+        hours: sortedIntervals.map(timeKey => {
+          const { availableSlots, occupiedSlots } = data[day][timeKey] || { availableSlots: 0, occupiedSlots: 0 };
           const [start, end] = timeKey.split('-');
           return {
             start,
@@ -125,11 +123,19 @@ export class GetSquadAnalyticsService {
       };
     });
 
+    const formatedSquad = {
+      id: squad.id,
+      name: squad.name,
+      theme_color: squad.theme_color,
+      members: squad._count.squad_member
+    }
+
     return {
       totalMeetings,
       availableHours: totalAvailableSlots,
       allIntervals: Array.from(allIntervals).sort(),
-      data: formattedData
+      data: formattedData,
+      squad: formatedSquad
     };
   }
 }
