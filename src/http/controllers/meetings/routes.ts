@@ -7,7 +7,7 @@ import { getMeetings } from "./get-meetings";
 export async function meetingsRoutes(app: FastifyInstance) {
   app.get('/meetings/:squad_id/:date/free', getDayFreeTimes)
 
-  app.post('/meetings', { onRequest: [verifyJWT] }, create)
+  app.post('/meetings', create)
 
   app.get('/meetings', { onRequest: [verifyJWT] }, getMeetings)
 

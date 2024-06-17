@@ -7,5 +7,5 @@ export interface SquadsRepository {
   findSquadById(squad_id: string): Promise<SquadTypes.IncludeUser | null>;
   findSquadsByIds(data: { squad_id: string }[]): Promise<Squad[] | []>;
   findSquadsByUserIdWithMeetings(user_id: string, start: Date, end: Date): Promise<Prisma.SquadGetPayload<{ include: { meetings: true, work_times: true } }>[] | []>;
-  findBySquadIdWithMeetings(squad_id: string, start: Date, end: Date): Promise<Prisma.SquadGetPayload<{ include: { meetings: true, work_times: true } }> | null>;
+  findBySquadIdWithMeetings(squad_id: string, start: Date, end: Date): Promise<Prisma.SquadGetPayload<{ include: { meetings: true, work_times: true, _count: { select: { squad_member: true } } } }> | null>;
 }

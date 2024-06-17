@@ -1,6 +1,7 @@
 import { SquadsRepository } from "@/repositories/squads-repository";
 import { endOfWeek, startOfWeek } from "date-fns";
 import { WorkTimes } from "@/@types/work-times";
+import { getTimeIntervals } from "@/utils/getTimeIntervals";
 
 interface GetDashboardDataServiceRequest {
   user_id: string;
@@ -53,7 +54,14 @@ export class GetDashboardDataService {
       squad.work_times.forEach(workTime => {
         (workTime.weekly_hours as any)
           .filter((day: WorkTimes.weekly_hours) => day.available)
-          .forEach((day: WorkTimes.weekly_hours) => day.hours.map(() => totalAvailableSlots += 1));
+          .forEach((day: WorkTimes.weekly_hours) => {
+            day.hours.forEach(hour => {
+              const intervals = getTimeIntervals(hour.start_hour, hour.end_hour, squad.meetings_duration * 60);
+
+              totalAvailableSlots += intervals.length
+            })
+
+          });
       });
 
     })

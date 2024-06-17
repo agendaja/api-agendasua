@@ -82,7 +82,13 @@ export class PrismaSquadsRepository implements SquadsRepository {
             }
           }
         },
-        work_times: true
+        work_times: true,
+        _count: {
+          select: {
+            squad_member: true
+          }
+        }
+
       }
     })
 
