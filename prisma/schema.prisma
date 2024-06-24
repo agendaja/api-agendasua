@@ -122,6 +122,8 @@ model Meetings {
   timezone      String?
   end_time      String
 
+  link String?
+
   owner    User   @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   owner_id String
 
