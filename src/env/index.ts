@@ -11,7 +11,9 @@ const envSchema = z.object({
   CLIENT_SECRET: z.string(),
   REDIRECT_URL: z.string(),
   WEBSITE_URL: z.string(),
-  PORT: z.coerce.number().default(3333)
+  PORT: z.coerce.number().default(3333),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.coerce.number(),
 })
 
 

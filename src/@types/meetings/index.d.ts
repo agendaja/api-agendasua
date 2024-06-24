@@ -8,4 +8,9 @@ declare namespace MeetingTypes {
     squad: Squad;
   };
 
+  export type Attendees = {
+    email: string;
+    organizer: boolean;
+  }[]
+
 }

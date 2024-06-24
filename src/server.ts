@@ -1,8 +1,12 @@
 import { app } from "./app";
 import { env } from './env';
+import CreateGoogleEvent from "./jobs/CreateGoogleEvent";
+import GoogleEventQueue from "./lib/queue";
+
+
+GoogleEventQueue.process(CreateGoogleEvent.handle)
 
 app.listen({
-  host: '0.0.0.0',
   port: env.PORT,
 }).then((host) => {
   console.log(host)

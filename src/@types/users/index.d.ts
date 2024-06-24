@@ -11,4 +11,6 @@ declare namespace UserTypes {
   }
   export type UserIntegration = User & { integration: Integration }
 
+  export type User = {}
+
 }
