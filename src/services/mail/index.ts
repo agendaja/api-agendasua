@@ -1,20 +1,9 @@
-import nodemailer from 'nodemailer'
-
-import { env } from '@/env';
 import { NewSquadMemberTemplate } from './templates/new-squad-member';
 import { NewMeetingTemplate } from './templates/new-meeting';
 import { RecoverPasswordTemplate } from './templates/revocer-password';
 import { NewUserSquadAndMemberTemplate } from './templates/new-user-and-squad-member';
+import { transporter } from '@/lib/mail';
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: env.MAILER_EMAIL,
-    pass: env.MAILER_KEY
-  }
-})
 
 type TemplateOptions = 'new-squad-member' | 'new-meeting' | 'recover-password' | 'new-user-and-squad-member'
 type Sender = {
