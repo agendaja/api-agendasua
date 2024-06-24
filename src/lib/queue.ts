@@ -1,22 +1,36 @@
 import Queue from 'bull'
 import redisConfig from '@/config/redis'
 
-import CreateGoogleEvent from '@/jobs/CreateGoogleEvent'
+import * as jobs from '../jobs'
 
-const GoogleEventQueue = new Queue(CreateGoogleEvent.key, 'redis://red-cpqsm76ehbks738h3hj0:6379')
+const queues = Object.values(jobs).map(job => ({
+  bull: new Queue(job.key, redisConfig),
+  name: job.key,
+  handle: job.handle
+}))
 
-GoogleEventQueue.on('error', (error) => {
-  console.log('FALHOU A FILA', error)
-})
+export default {
+  queues,
+  add(name: string, data: any) {
+    const queue = this.queues.find(queue => queue.name === name)
 
-GoogleEventQueue.on('failed', (job, error) => {
-  console.log('FALHOU A FILA', error)
-})
+    return queue?.bull.add(data)
+  },
+  process() {
+    return this.queues.forEach(queue => {
+      queue.bull.process(queue.handle)
 
-GoogleEventQueue.on('failed', (job, error) => {
-  console.log('FALHOU A FILA', error)
-})
+      queue.bull.on('failed', (job, error) => {
+        console.log('FALHOU A FILA', queue.name, job.data)
+        console.log('ERRO', error)
+      })
+
+      queue.bull.on('complete', (job, error) => {
+        console.log('SUCESSO', queue.name, job.data)
+      })
+    })
+  }
+}
 
 
-export default GoogleEventQueue
 

@@ -70,26 +70,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       }
     ]
     // Acionar Job de criação eventos no Google
-    await GoogleEventQueue.add({ meeting, attendees })
-
-    // await createCalendarEvent.execute({
-    //   name: meeting.name,
-    //   description: meeting?.description,
-    //   start_time: meeting.selected_date,
-    //   end_time: meeting.end_time,
-    //   timezone: meeting.timezone || '',
-    //   user_id: meeting.owner_id,
-    //   attendees: [
-    //     {
-    //       email,
-    //       organizer: false
-    //     },
-    //     {
-    //       email: meeting.owner.email,
-    //       organizer: true
-    //     }
-    //   ]
-    // })
+    await GoogleEventQueue.add('CreateGoogleEvent', { meeting, attendees })
 
     return reply.status(200).send({ meeting })
 

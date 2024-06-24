@@ -1,15 +1,18 @@
 import { MeetingTypes } from "@/@types/meetings";
 import { makeCreateCalendarEventService } from "@/services/factories/google/make-create-calendar-envent-service";
+import { makeUpdateMeetingsService } from "@/services/factories/meetings/make-update-meeting-service";
 
 
 export default {
-  key: 'SendUserMail',
+  key: 'CreateGoogleEvent',
   async handle({ data }: { data: { meeting: MeetingTypes.Meeting, attendees: MeetingTypes.Attendees } }) {
 
     const { meeting, attendees } = data;
     const createCalendarEvent = makeCreateCalendarEventService()
+    const updateMeetingService = makeUpdateMeetingsService()
 
-    const calendarEvent = await createCalendarEvent.execute({
+
+    const { hangoutLink } = await createCalendarEvent.execute({
       name: meeting.name,
       description: meeting?.description,
       start_time: meeting.selected_date,
@@ -19,12 +22,12 @@ export default {
       attendees,
     });
 
-    console.log(calendarEvent)
+    await updateMeetingService.execute({
+      meeting_id: meeting.id,
+      data: {
+        link: hangoutLink,
+      }
+    });
 
-    // // Atualize a reunião com o link do Google Meet
-    // await prisma.meeting.update({
-    //   where: { id: meeting.id },
-    //   data: { meetLink: calendarEvent.hangoutLink },
-    // });
   }
 }

@@ -49,7 +49,7 @@ export class CreateCalendarEventService {
     //* *  Adiciona 3 horas ao horário de início por conta de bug do google **//
     const parsedStartTime = addHours(start_time, 3)
 
-    await calendar.events.insert({
+    const { data: { hangoutLink } } = await calendar.events.insert({
       calendarId: "primary",
       sendUpdates: "all",
       sendNotifications: true,
@@ -78,6 +78,8 @@ export class CreateCalendarEventService {
         }
       },
     })
+
+    return { hangoutLink }
 
   }
 }

@@ -15,6 +15,26 @@ export class PrismaMeetingsRepository implements MeetingsRepository {
     return meeting;
   }
 
+  async update(id: string, data: Prisma.MeetingsUncheckedUpdateInput) {
+    await prisma.meetings.update({
+      where: {
+        id
+      },
+      data
+    });
+
+  }
+
+  async findById(id: string) {
+    const meeting = await prisma.meetings.findUnique({
+      where: {
+        id
+      }
+    });
+
+    return meeting;
+  }
+
   async findByOwnerId(owner_id: string, startDate: Date, endDate: Date) {
     const meetings = await prisma.meetings.findMany({
       where: {
