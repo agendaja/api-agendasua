@@ -23,7 +23,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(cors, {
-  origin: ['https://agendasua.com.br', 'https://www.agendasua.com.br', 'http://localhost:3000'],
+  origin: ['https://agendasua.com.br', 'https://www.agendasua.com.br'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],

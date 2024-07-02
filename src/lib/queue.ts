@@ -25,7 +25,7 @@ export default {
         console.log('ERRO', error)
       })
 
-      queue.bull.on('complete', (job, error) => {
+      queue.bull.on('complete', (job) => {
         console.log('SUCESSO', queue.name, job.data)
       })
     })
