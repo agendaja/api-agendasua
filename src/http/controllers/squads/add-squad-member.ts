@@ -25,6 +25,7 @@ export async function addSquadMember(request: FastifyRequest, reply: FastifyRepl
   const deleteInviteeProfile = makeDeleteInviteePorfileService()
 
   try {
+
     await addSquadMember.execute({
       email,
       squad_id,
