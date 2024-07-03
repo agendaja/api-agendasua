@@ -45,9 +45,11 @@ export class GetDayFreeMeetingTimesService {
     const today = utcToZonedTime(new Date(), "America/Sao_Paulo")
     const meetingsForTheDate = await this.meetingsRepository.getMeetingsFromDate(squad_id, date)
 
-    // Agora o work_time é um array de work_timesnn
+    // Filtra apenas os horários de trabalho de vendedores que possuem integrações ativas
+    const filteredWorkTimes = work_times.filter(w => w.user.integration.length > 0)
+
     // Precisa devolver os horarios disponíveis adicionando o work_time.id no availableTime para saber de qual seller é o horário
-    const availableTimes = work_times.map((work_time) => {
+    const availableTimes = filteredWorkTimes.map((work_time) => {
       return work_time.weekly_hours[date.getDay()].hours.map(({ start_hour, end_hour }) => {
         const parsedStartHour = Number(start_hour.slice(0, 2));
         const parsedStartMinute = Number(start_hour.slice(3, 5));
