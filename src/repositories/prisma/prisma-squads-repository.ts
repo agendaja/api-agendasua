@@ -11,6 +11,15 @@ export class PrismaSquadsRepository implements SquadsRepository {
 
     return squad
   }
+  async update(id: string, data: Prisma.SquadUncheckedUpdateInput) {
+    await prisma.squad.update({
+      where: {
+        id,
+      },
+      data
+    })
+
+  }
 
   async findSquadsByUserId(user_id: string) {
     const squads = await prisma.squad.findMany({
