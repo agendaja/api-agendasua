@@ -5,13 +5,20 @@ import { prisma } from "@/lib/prisma";
 
 export class PrismaWorkTimeRepository implements WorkTimeRepository {
   async getSquadSellersWorkTime(squad_id: string) {
-    const work_time = await prisma.workTimes.findMany({
+    const work_times = await prisma.workTimes.findMany({
       where: {
         squad_id,
+      },
+      include: {
+        user: {
+          select: {
+            integration: true
+          }
+        }
       }
     })
 
-    return work_time as WorkTimes.WorkTime[]
+    return work_times
   }
 
   async getSellerWorkTime(id: string) {
