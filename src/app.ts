@@ -3,13 +3,15 @@ import { usersRoutes } from './http/controllers/users/routes';
 import { ZodError } from 'zod';
 import { env } from './env';
 import { fastifyJwt } from '@fastify/jwt';
-import { squadFreeRoutes, squadsRoutes } from './http/controllers/squads/routes';
-import { meetingsFreeRoutes } from './http/controllers/meetings/routes';
+import { squadsRoutes } from './http/controllers/squads/routes';
+import { meetingsRoutes } from './http/controllers/meetings/routes';
 import cors from '@fastify/cors'
 import { authRoutes } from './http/controllers/auth/routes';
 import { healthRoutes } from './http/controllers/routes';
 import { googleRoutes } from './http/controllers/integrations/google/routes';
-import { sellerRoutes } from './http/controllers/squads/sellers/routes';
+import { sellerRoutes } from './http/controllers/seller/routes';
+import { integrationRoutes } from './http/controllers/integrations/routes';
+import { dashboardRoutes } from './http/controllers/dashboard/route';
 
 export const app = fastify()
 
@@ -21,7 +23,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(cors, {
-  origin: '*',
+  origin: ['https://agendasua.com.br', 'https://www.agendasua.com.br'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -32,11 +34,12 @@ app.register(healthRoutes) // This is the health check route
 
 app.register(usersRoutes)
 app.register(squadsRoutes)
-app.register(squadFreeRoutes)
-app.register(meetingsFreeRoutes)
+app.register(meetingsRoutes)
 app.register(authRoutes)
 app.register(googleRoutes)
 app.register(sellerRoutes)
+app.register(integrationRoutes)
+app.register(dashboardRoutes)
 
 
 app.setErrorHandler((error, request, reply) => {

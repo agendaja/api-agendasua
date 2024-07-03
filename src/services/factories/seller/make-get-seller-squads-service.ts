@@ -1,6 +1,6 @@
 import { PrismaSquadsRepository } from "@/repositories/prisma/prisma-squads-repository"
 import { PrismaSquadsMemberRepository } from "@/repositories/prisma/prisma-squads-member-repository"
-import { GetSellerSquadsService } from "@/services/squads/seller/get-seller-squads"
+import { GetSellerSquadsService } from "@/services/seller/get-seller-squads"
 
 
 export function makeGetSellerSquadsService() {

@@ -2,7 +2,7 @@ import { ResourceNotFoundError } from "@/services/errors/resource-not-found-erro
 import { UserAlreadyExistsError } from "@/services/errors/user-already-exists-error";
 import { makeAddSquadMemberService } from "@/services/factories/make-add-squad-member";
 import { makeDeleteInviteePorfileService } from "@/services/factories/make-delete-invitee-profile-service";
-import { makeRegisterService } from "@/services/factories/make-register-service";
+import { makeRegisterService } from "@/services/factories/users/make-register-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 

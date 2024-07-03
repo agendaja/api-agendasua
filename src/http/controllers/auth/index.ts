@@ -1,4 +1,5 @@
-import { makeGetUserPorfileService } from "@/services/factories/make-get-user-profile-service";
+import { makeGetUserPorfileService } from "@/services/factories/users/make-get-user-profile-service";
+import { sanitizeUser } from "@/utils/sanitizeUser";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function getAuthUser(request: FastifyRequest, reply: FastifyReply) {
@@ -13,10 +14,9 @@ export async function getAuthUser(request: FastifyRequest, reply: FastifyReply) 
     return reply.status(404)
   }
 
+  const parsedUser = sanitizeUser(user)
+
   return reply.status(200).send({
-    name: user.name,
-    email: user.email,
-    integration: user.integration,
-    admin: user.admin
+    ...parsedUser
   })
 }

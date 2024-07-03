@@ -1,24 +1,23 @@
 
 import { ResourceNotFoundError } from "@/services/errors/resource-not-found-error";
-import { makeGetIntegrationService } from "@/services/factories/make-get-integration-service";
+import { makeGetIntegrationService } from "@/services/factories/integrations/make-get-integration-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 export async function getIntegration(request: FastifyRequest, reply: FastifyReply) {
 
   const bodySchema = z.object({
-    email: z.string().email(),
     name: z.enum(['google', 'zoom'])
   })
 
-  const { email, name } = bodySchema.parse(request.body)
+  const { name } = bodySchema.parse(request.body)
 
+  const user_id = request.user.sub
 
   const getIntegration = makeGetIntegrationService()
 
-
   try {
-    const integration = await getIntegration.execute({ email, name })
+    const integration = await getIntegration.execute({ user_id, name })
 
     return reply.status(200).send({ integration })
 

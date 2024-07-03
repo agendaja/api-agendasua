@@ -77,6 +77,14 @@ export class InviteSellerToSquadService {
         throw new UserAlreadyExistsError();
       }
 
+      await this.usersRepository.createPreRegister({
+        name: existingUser.name,
+        email: existingUser.email,
+        user_id: existingUser.id,
+        squad_id,
+        token
+      });
+
       await SendMail(
         {
           name: existingUser.name,

@@ -24,15 +24,12 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  Squad       Squad[]
-  WorkTimes   WorkTimes[]
-  SquadMember SquadMember[]
-  Meetings    Meetings[]
-  Invite      Invite[]
-<<<<<<< HEAD
-  integration Integration[]
-=======
->>>>>>> e9ce8e69f247c818063a99d5d33dca6a06f0d9e9
+  squad        Squad[]
+  work_times   WorkTimes[]
+  squad_member SquadMember[]
+  meetings     Meetings[]
+  invite       Invite[]
+  integration  Integration[]
 
   @@map("users")
 }
@@ -70,12 +67,12 @@ model Squad {
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id String
 
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt
-  WorkTimes   WorkTimes[]
-  SquadMember SquadMember[]
-  Meetings    Meetings[]
-  Invite      Invite[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  work_times   WorkTimes[]
+  squad_member SquadMember[]
+  meetings     Meetings[]
+  invite       Invite[]
 
   @@map("squads")
 }
@@ -114,13 +111,9 @@ model WorkTimes {
 model Meetings {
   id String @id @default(uuid())
 
-<<<<<<< HEAD
   name        String
   description String?
 
-=======
-  name  String
->>>>>>> e9ce8e69f247c818063a99d5d33dca6a06f0d9e9
   email String
   phone String
 
@@ -128,6 +121,8 @@ model Meetings {
   selected_time String
   timezone      String?
   end_time      String
+
+  link String?
 
   owner    User   @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   owner_id String
@@ -140,7 +135,6 @@ model Meetings {
 
   @@map("meetings")
 }
-<<<<<<< HEAD
 
 model Integration {
   id String @id @default(uuid())
@@ -179,5 +173,3 @@ model GoogleIntegrationData {
 
   updatedAt DateTime @default(now()) @updatedAt
 }
-=======
->>>>>>> e9ce8e69f247c818063a99d5d33dca6a06f0d9e9

@@ -1,10 +1,12 @@
 import { ResourceNotFoundError } from "@/services/errors/resource-not-found-error";
 import { TimeNotAvailabelError } from "@/services/errors/time-not-available";
 import { makeCreateCalendarEventService } from "@/services/factories/google/make-create-calendar-envent-service";
-import { makeCreateMeetingsService } from "@/services/factories/make-meeting-service";
+import { makeCreateMeetingsService } from "@/services/factories/meetings/make-meeting-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import moment from "moment-timezone";
 import { z } from "zod";
+import GoogleEventQueue from "@/lib/queue";
+
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
 
@@ -57,24 +59,18 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       squad_id,
     })
 
-    await createCalendarEvent.execute({
-      name: meeting.name,
-      description: meeting?.description,
-      start_time: meeting.selected_date,
-      end_time: meeting.end_time,
-      timezone: meeting.timezone || '',
-      user_id: meeting.owner_id,
-      attendees: [
-        {
-          email,
-          organizer: false
-        },
-        {
-          email: meeting.owner.email,
-          organizer: true
-        }
-      ]
-    })
+    const attendees = [
+      {
+        email,
+        organizer: false
+      },
+      {
+        email: meeting.owner.email,
+        organizer: true
+      }
+    ]
+    // Acionar Job de criação eventos no Google
+    await GoogleEventQueue.add('CreateGoogleEvent', { meeting, attendees })
 
     return reply.status(200).send({ meeting })
 

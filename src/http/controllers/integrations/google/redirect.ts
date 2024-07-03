@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import { makeCreateIntegrationService } from "@/services/factories/make-create-integration-service";
+import { makeCreateIntegrationService } from "@/services/factories/integrations/make-create-integration-service";
 import { oauth2Client } from "@/utils/google/oAuthClietnt";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";

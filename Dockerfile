@@ -6,8 +6,8 @@ ENV JWT_SECRET=ebb779d2-5418-405b-9e63-d0e603f08a98
 
 ENV DATABASE_URL=postgresql://postgres:LLEiaVeo6rSG@35.231.110.34:5432/some-postgres?schema=public
 
-ENV MAILER_EMAIL=sendmail845@gmail.com
-ENV MAILER_KEY="oxxm btuu sxhl rpef"
+ENV MAILER_EMAIL=suporte.agendasua@gmail.com
+ENV MAILER_KEY="vsfi fmnp xkmt vtqj"
 
 COPY package*.json ./
 
