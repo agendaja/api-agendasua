@@ -35,7 +35,7 @@ export class PrismaMeetingsRepository implements MeetingsRepository {
     return meeting;
   }
 
-  async findByOwnerId(owner_id: string, startDate: Date, endDate: Date) {
+  async findByOwnerId(owner_id: string, startDate: string, endDate: string) {
     const meetings = await prisma.meetings.findMany({
       where: {
         owner_id,
@@ -65,6 +65,34 @@ export class PrismaMeetingsRepository implements MeetingsRepository {
     })
 
     return meetings as MeetingTypes.IncludeSquad[];
+  }
+
+  async findMeetingsByDateTimeRange(squad_id: string, startDate: string, endDate: string) {
+
+    const end_time = endDate.split('T')[1].substring(0, 5);
+    const selected_time = startDate.split('T')[1].substring(0, 5);
+
+    const meetings = await prisma.meetings.findMany({
+      where: {
+        squad_id,
+        selected_date: {
+          equals: startDate
+        },
+        end_time,
+        selected_time,
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            email: true,
+            name: true
+          }
+        }
+      }
+    });
+
+    return meetings;
   }
 
 }

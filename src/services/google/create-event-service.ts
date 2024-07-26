@@ -47,7 +47,7 @@ export class CreateCalendarEventService {
 
 
     //* *  Adiciona 3 horas ao horário de início por conta de bug do google **//
-    const parsedStartTime = addHours(start_time, 3)
+    const parsedStartTime = addHours(date, 3).toISOString();
 
     const { data: { hangoutLink } } = await calendar.events.insert({
       calendarId: "primary",
@@ -59,7 +59,7 @@ export class CreateCalendarEventService {
         description,
         start: {
           // RFC3339 format // 2023-08-13T16:07:54
-          dateTime: parsedStartTime.toISOString(),
+          dateTime: parsedStartTime,
           timeZone: timezone
         },
         end: {
