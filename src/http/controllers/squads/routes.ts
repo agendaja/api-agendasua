@@ -7,6 +7,7 @@ import { getUserSquads } from "./get-user-squads";
 import { addNewUserToSquad } from "./add-new-user-to-squad-member";
 import { addSquadMember } from "./add-squad-member";
 import { update } from "./update";
+import { getSquadMeetingsByTimeRange } from "./get-squad-meetings-by-time-range";
 
 export async function squadsRoutes(app: FastifyInstance) {
 
@@ -24,4 +25,7 @@ export async function squadsRoutes(app: FastifyInstance) {
   app.put('/squad/:squad_id', { onRequest: [verifyJWT] }, update)
 
   app.get('/squads', { onRequest: [verifyJWT] }, getUserSquads)
+
+  app.post('/squads/:squad_id/meetings', { onRequest: [verifyJWT] }, getSquadMeetingsByTimeRange)
+
 }

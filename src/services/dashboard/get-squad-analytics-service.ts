@@ -2,6 +2,7 @@ import { SquadsRepository } from "@/repositories/squads-repository";
 import { endOfWeek, startOfWeek } from "date-fns";
 import { WorkTimes } from "@/@types/work-times";
 import { getTimeIntervals } from "@/utils/getTimeIntervals";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 
 interface GetSquadAnalyticsServiceRequest {
   squad_id: string;
@@ -32,7 +33,7 @@ export class GetSquadAnalyticsService {
     private squadsRepository: SquadsRepository,
   ) { }
 
-  async execute({ squad_id }: GetSquadAnalyticsServiceRequest): Promise<GetSquadAnalyticsServiceResponse | {}> {
+  async execute({ squad_id }: GetSquadAnalyticsServiceRequest): Promise<GetSquadAnalyticsServiceResponse> {
 
     const today = new Date()
 
@@ -42,7 +43,7 @@ export class GetSquadAnalyticsService {
     const squad = await this.squadsRepository.findBySquadIdWithMeetings(squad_id, weekStart, weekEnd)
 
     if (!squad) {
-      return {}
+      throw new ResourceNotFoundError()
     }
 
     const totalMeetings = squad.meetings.length
