@@ -1,6 +1,5 @@
 import { ResourceNotFoundError } from "@/services/errors/resource-not-found-error";
 import { TimeNotAvailabelError } from "@/services/errors/time-not-available";
-import { makeCreateCalendarEventService } from "@/services/factories/google/make-create-calendar-envent-service";
 import { makeCreateMeetingsService } from "@/services/factories/meetings/make-meeting-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import moment from "moment-timezone";
@@ -44,7 +43,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   // TODO: if the event has a availability of time, validate if the choosen date and time follows the availability
 
   const createMeetingService = makeCreateMeetingsService()
-  const createCalendarEvent = makeCreateCalendarEventService()
 
 
   try {

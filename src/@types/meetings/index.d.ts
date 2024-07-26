@@ -11,6 +11,18 @@ declare namespace MeetingTypes {
   export type Attendees = {
     email: string;
     organizer: boolean;
-  }[]
+  }
 
+  export type MeetingQueue = {
+    meeting: Meeting;
+    attendees: Attendees[];
+  }
+
+  export type IncludeOwner = Meeting & {
+    owner: {
+      id: string,
+      email: string,
+      name: string
+    }
+  }
 }

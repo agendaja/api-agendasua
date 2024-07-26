@@ -2,6 +2,7 @@ import Queue from 'bull'
 import redisConfig from '@/config/redis'
 
 import * as jobs from '../jobs'
+import { MeetingTypes } from '@/@types/meetings'
 
 const queues = Object.values(jobs).map(job => ({
   bull: new Queue(job.key, redisConfig),
@@ -11,7 +12,7 @@ const queues = Object.values(jobs).map(job => ({
 
 export default {
   queues,
-  add(name: string, data: any) {
+  add(name: string, data: MeetingTypes.MeetingQueue) {
     const queue = this.queues.find(queue => queue.name === name)
 
     return queue?.bull.add(data)
@@ -19,6 +20,10 @@ export default {
   process() {
     return this.queues.forEach(queue => {
       queue.bull.process(queue.handle)
+
+      queue.bull.on('error', (error) => {
+        console.log('ERRO NA FILA', error)
+      })
 
       queue.bull.on('failed', (job, error) => {
         console.log('FALHOU A FILA', queue.name, job.data)
