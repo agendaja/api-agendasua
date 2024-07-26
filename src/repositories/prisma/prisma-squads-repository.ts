@@ -11,6 +11,7 @@ export class PrismaSquadsRepository implements SquadsRepository {
 
     return squad
   }
+
   async update(id: string, data: Prisma.SquadUncheckedUpdateInput) {
     await prisma.squad.update({
       where: {
@@ -27,7 +28,16 @@ export class PrismaSquadsRepository implements SquadsRepository {
         user_id
       },
       include: {
-        squad_member: true
+        squad_member: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true
+              }
+            }
+          }
+        }
       }
     })
 
@@ -77,6 +87,7 @@ export class PrismaSquadsRepository implements SquadsRepository {
 
     return squads
   }
+
   async findBySquadIdWithMeetings(id: string, start: Date, end: Date) {
     const squad = await prisma.squad.findUnique({
       where: {
