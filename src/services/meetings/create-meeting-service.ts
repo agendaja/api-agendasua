@@ -55,7 +55,7 @@ export class CreateMeetingService {
       throw new TimeNotAvailabelError();
     }
 
-    const work_time = await this.workTimeRepository.getSellerWorkTime(availableTime.id, squad.id);
+    const work_time = await this.workTimeRepository.getWorkTime(availableTime.id, squad.id);
 
     if (!work_time) {
       throw new ResourceNotFoundError()
