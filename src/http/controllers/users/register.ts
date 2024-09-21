@@ -19,7 +19,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   try {
     const registerService = makeRegisterService()
 
-    await registerService.execute({
+    const {user} = await registerService.execute({
       name,
       email,
       password,
@@ -27,6 +27,18 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       admin,
       document
     })
+
+    const token = await reply.jwtSign({
+      email,
+      name: user.name,
+    }, {
+      sign: {
+        sub: user.id,
+      }
+    })
+
+    return reply.status(201).send({token})
+
   } catch (error) {
 
     if (error instanceof UserAlreadyExistsError) {
@@ -36,5 +48,4 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     throw error
   }
 
-  return reply.status(201).send()
 }

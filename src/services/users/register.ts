@@ -23,7 +23,7 @@ export class RegisterService {
       throw new UserAlreadyExistsError()
     }
 
-    await this.usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password_hash,
@@ -31,5 +31,9 @@ export class RegisterService {
       admin,
       document
     })
+
+    return { 
+      user
+    }
   }
 }
