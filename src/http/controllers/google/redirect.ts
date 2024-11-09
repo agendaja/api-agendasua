@@ -30,6 +30,6 @@ export async function googleRedirect(req: FastifyRequest, reply: FastifyReply) {
     name: 'google'
   })
 
-  return reply.redirect('http://localhost:3000/integrations')
+  return reply.redirect('http://localhost:3000/integracoes')
 
 }

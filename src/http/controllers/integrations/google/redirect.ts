@@ -29,6 +29,6 @@ export async function googleRedirect(req: FastifyRequest, reply: FastifyReply) {
     name: 'google'
   })
 
-  return reply.redirect(env.WEBSITE_URL + '/integrations')
+  return reply.redirect(env.WEBSITE_URL + '/integracoes')
 
 }
