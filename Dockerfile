@@ -2,12 +2,25 @@ FROM node:18-alpine
 
 WORKDIR /usr/app
 
-ENV JWT_SECRET=ebb779d2-5418-405b-9e63-d0e603f08a98
 
-ENV DATABASE_URL=postgresql://postgres:LLEiaVeo6rSG@35.231.110.34:5432/some-postgres?schema=public
+ENV TZ="America/Sao_Paulo"
 
-ENV MAILER_EMAIL=suporte.agendasua@gmail.com
+ENV JWT_SECRET="ebb779d2-5418-405b-9e63-d0e603f08a98"
+
+ENV MAILER_EMAIL="suporte.agendasua@gmail.com"
 ENV MAILER_KEY="vsfi fmnp xkmt vtqj"
+
+ENV CLIENT_ID="612569825207-lsd9jj16c5caif508fv4dlrsa7rt2giv.apps.googleusercontent.com"
+ENV CLIENT_SECRET="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"
+
+ENV REDIRECT_URL="https://api.agendasua.com.br/google/redirect"
+
+ENV API_KEY="AIzaSyCtMqi5ocD9WeydSjTtvUWe9sGsrMo6C3s"
+
+ENV WEBSITE_URL="https://agendasua.com.br"
+
+ENV REDIS_HOST=10.255.248.59
+ENV REDIS_PORT=6379
 
 COPY package*.json ./
 
